@@ -2,8 +2,8 @@
 /**********************************FILESYSTEM SIMULATOR*********************************/
 
 /*By
-    NIRUPAM BASAK (CS2004)
-    SUJAN DAS (CS2027)
+    NIRUPAM BASAK
+    SUJAN DAS
     */
 
 /*  command                         action
@@ -1010,10 +1010,4 @@ bool del_file(char *name,char *dir)
     free(fp);
     return true;
 }
-
-
-/*References:
-    1. https://www.dropbox.com/s/qhasvnbpy14rsht/filesys.pdf?dl=0
-    2. https://github.com/scocoyash/File-System-in-C/blob/master/simulatedFileSystem.c
-    */
 
