@@ -954,6 +954,30 @@ bool ch_exist(char *cur_par,char *cur_name,char *name,bool type)
     return false;
 }
 
+
+//deletes file from the filesystem
+bool del_file(char *name,char *dir)
+{
+    struct file *fp=malloc(BLOCKSIZE);
+    int block_index=find_block(name,dir,false);
+    memcpy(fp,disk+block_index*BLOCKSIZE,BLOCKSIZE);
+//deallocate all data blocks
+    for(int i=~-(fp->data_block_count);~i;i--)
+        if(!dealloc_block(fp->data_block[i]))
+        {
+            free(fp);
+            return false;
+        }
+//deallocate block for file
+    if(!dealloc_block(block_index))
+    {
+        free(fp);
+        return false;
+    }
+    free(fp);
+    return true;
+}
+
 //delete directory from the filesystem
 bool del_dir(char *name,char *parent)
 {
@@ -985,29 +1009,6 @@ bool del_dir(char *name,char *parent)
         return false;
     }
     free(dir);
-    return true;
-}
-
-//deletes file from the filesystem
-bool del_file(char *name,char *dir)
-{
-    struct file *fp=malloc(BLOCKSIZE);
-    int block_index=find_block(name,dir,false);
-    memcpy(fp,disk+block_index*BLOCKSIZE,BLOCKSIZE);
-//deallocate all data blocks
-    for(int i=~-(fp->data_block_count);~i;i--)
-        if(!dealloc_block(fp->data_block[i]))
-        {
-            free(fp);
-            return false;
-        }
-//deallocate block for file
-    if(!dealloc_block(block_index))
-    {
-        free(fp);
-        return false;
-    }
-    free(fp);
     return true;
 }
 
